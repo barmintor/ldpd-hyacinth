@@ -1,4 +1,5 @@
 HYACINTH = YAML.load_file("#{Rails.root}/config/hyacinth.yml")[Rails.env]
+EZID = HashWithIndifferentAccess.new(YAML.load_file("#{Rails.root}/config/ezid.yml")[Rails.env])
 
 Hyacinth::Utils::Logger.logger.tap do |logger|
   logger.info '---------------------------'
@@ -8,6 +9,7 @@ Hyacinth::Utils::Logger.logger.tap do |logger|
   logger.info 'Fedora URL: ' + ActiveFedora.config.credentials[:url]
   logger.info 'Hydra Solr URL: ' + ActiveFedora.solr_config[:url]
   logger.info 'Hyacinth Solr URL: ' + HYACINTH['solr_url']
+  logger.info 'EZID URL: ' + EZID[:url]
   logger.info '---------------------------'
   logger.info ''
 end
