@@ -171,12 +171,16 @@ module Ezid
       end
 
       def make_anvl(metadata)
-        def escape(s)
-          URI.escape(s, /[%:\n\r]/)
-        end
+        # fcd1, 08/31/16: Rubocop prefers a lambda instead of nested method definition
+        # def escape(s)
+        #   URI.escape(s, /[%:\n\r]/)
+        #  end
+        escape = -> (s) { URI.escape(s, /[%:\n\r]/) }
         anvl = ''
         metadata.each do |n, v|
-          anvl += escape(n.to_s) + ': ' + escape(v.to_s) + "\n"
+          # fcd1, 08/31/16: code changes due to lambda instead of nested method defintion
+          # anvl += escape(n.to_s) + ': ' + escape(v.to_s) + "\n"
+          anvl += escape.call(n.to_s) + ': ' + escape.call(v.to_s) + "\n"
         end
         # remove last newline. there is probably a really good way to
         # avoid adding it in the first place. if you know it, please fix.
