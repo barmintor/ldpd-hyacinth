@@ -28,21 +28,6 @@ module Hyacinth::Ezid
       @dfd['abstract'][0]['abstract_value'] if @dfd.key? 'abstract'
     end
 
-    # Following will return a string containing the authors (i.e. names with role set to author)
-    # in the following format:
-    # 'Smith, John; Doe, Jane'
-    def build_author_string
-      author_string = ''
-      names = @dfd['name']
-      names.each do |name|
-        # puts name.inspect
-        roles = name['name_role']
-        # only process authors.
-        author_string += name['name_term']['value'] + '; ' if author? roles
-      end
-      author_string[0..-3]
-    end
-
     def process_names
       @dfd['name'].each do |name|
         name['name_role'].each do |role|
@@ -55,14 +40,6 @@ module Hyacinth::Ezid
           end
         end
       end
-    end
-
-    def author?(roles)
-      roles.each do |role|
-        # casecmp returns 0 if strings are equal, ignore case
-        return true if role['name_role_term']['value'].casecmp('author').zero?
-      end
-      false
     end
   end
 end

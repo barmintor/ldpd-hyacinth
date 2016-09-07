@@ -27,20 +27,6 @@ describe Hyacinth::Ezid::MetadataRetrieval do
 
   end
 
-  context "#build_author_string:" do
-    
-    it "build string containing authors" do
-      # dfd: dynamic_field_data
-      dfd = sample_item_digital_object_data['dynamic_field_data']
-      local_metadata_retrieval = Hyacinth::Ezid::MetadataRetrieval.new dfd
-      # puts sample_item_digital_object_data
-      expected_author_string = 'Salinger, J. D.; Lincoln, Abraham'
-      actual_author_string = local_metadata_retrieval.build_author_string
-      expect(actual_author_string).to eq(expected_author_string)
-    end
-
-  end
-
   context "#abstract:" do
     
     it "abstract" do
