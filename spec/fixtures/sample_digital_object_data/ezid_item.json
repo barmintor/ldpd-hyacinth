@@ -30,7 +30,8 @@
          {
             "name_term": {
                "value" : "Salinger, J. D.",
-               "uri" : "http://id.loc.gov/authorities/names/n50016589"
+               "uri" : "http://id.loc.gov/authorities/names/n50016589",
+               "name_type": "personal"
             },
             "name_role":[
                {
@@ -44,7 +45,8 @@
          {
             "name_term": {
                "value" : "Picasso González, Juan",
-               "uri" : "http://id.loc.gov/authorities/names/n2003054176.html"
+               "uri" : "http://id.loc.gov/authorities/names/n2003054176.html",
+               "name_type": "personal"
             },
             "name_role":[
                {
@@ -58,7 +60,8 @@
          {
             "name_term": {
                "value" : "Lincoln, Abraham",
-               "uri" : "http://id.loc.gov/authorities/names/n79006779"
+               "uri" : "http://id.loc.gov/authorities/names/n79006779",
+               "name_type": "personal"
             },
             "name_role":[
                {
@@ -74,7 +77,22 @@
                   }
                }
             ]
-         }
+         },
+	  {
+	      "name_term": {
+		  "uri": "temp:ea1cc077df24fbc74a96019811e6546692848b85a63cf6189c3d45b7bbdeaf17",
+		  "value": "Columbia University. English and Comparative Literature",
+		  "name_type": "corporate"
+	      },
+	      "name_role": [
+		  {
+		      "name_role_term": {
+			  "uri": "http://id.loc.gov/vocabulary/relators/org",
+			  "value": "Originator"
+		      }
+		  }
+	      ]
+	  }
       ],
        "subject_topic": [
 	   {
