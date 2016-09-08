@@ -51,10 +51,6 @@ module Hyacinth::Ezid
       @dfd['doi_identifier'][0]['doi_identifier_value'] if @dfd.key? 'doi_identifier'
     end
 
-    def publisher
-      @dfd['publisher'][0]['publisher_value'] if @dfd.key? 'publisher'
-    end
-
     def process_names
       @dfd['name'].each do |name|
         name['name_role'].each do |role|

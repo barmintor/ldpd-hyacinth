@@ -97,18 +97,6 @@ describe Hyacinth::Ezid::HyacinthMetadataRetrieval do
 
   end
 
-  context "#publisher" do
-    
-    it "publisher" do
-      dfd = sample_item_digital_object_data['dynamic_field_data']
-      local_metadata_retrieval = Hyacinth::Ezid::HyacinthMetadataRetrieval.new dfd
-      expected_publisher = 'Academic Commons, Columbia University'
-      actual_publisher = local_metadata_retrieval.publisher
-      expect(actual_publisher).to eq(expected_publisher)
-    end
-
-  end
-
   context "#subject_topic:" do
     
     it "subject_topic" do
