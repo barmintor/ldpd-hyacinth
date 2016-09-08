@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Hyacinth::Ezid::HyacinthMetadataRetrieval do
 
   let(:sample_item_digital_object_data) {
-    dod = JSON.parse( fixture('sample_digital_object_data/ezid_item.json').read )
+    dod = JSON.parse( fixture('lib/hyacinth/ezid/ezid_item.json').read )
     dod['identifiers'] = ['item.' + SecureRandom.uuid] # random identifer to avoid collisions
     dod
   }
