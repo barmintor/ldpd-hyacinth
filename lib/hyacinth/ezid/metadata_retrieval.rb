@@ -28,6 +28,24 @@ module Hyacinth::Ezid
       @dfd['abstract'][0]['abstract_value'] if @dfd.key? 'abstract'
     end
 
+    # Following returns the starting year of the Date Issued field.
+    # Date is encoded using w3cdtf, so year is always present at start of date
+    def date_issued_start_year
+      @dfd['date_issued'][0]['date_issued_start_value'][0..3] if @dfd.key? 'date_issued'
+    end
+
+    def parent_publication_issn
+      @dfd['parent_publication'][0]['parent_publication_issn'] if @dfd.key? 'parent_publication'
+    end
+
+    def parent_publication_isbn
+      @dfd['parent_publication'][0]['parent_publication_isbn'] if @dfd.key? 'parent_publication'
+    end
+
+    def parent_publication_doi
+      @dfd['parent_publication'][0]['parent_publication_doi'] if @dfd.key? 'parent_publication'
+    end
+
     def process_names
       @dfd['name'].each do |name|
         name['name_role'].each do |role|
@@ -40,6 +58,14 @@ module Hyacinth::Ezid
           end
         end
       end
+    end
+
+    def subjects_topic
+      subjects_topic = []
+      @dfd['subject_topic'].each do |topic|
+        subjects_topic << topic['subject_topic_term']['value']
+      end
+      subjects_topic
     end
   end
 end

@@ -154,5 +154,59 @@
 		}
 	    }
 	]
+	,
+	"date_issued" : 
+	[
+	    {
+		"date_issued_start_value" : "2015-01-01"
+	    }
+	]
+	,
+	"parent_publication" : 
+	[
+	    {
+		"parent_publication_issn" : "1932-6203",
+		"parent_publication_isbn" : "0670734608",
+		"parent_publication_volume" : "10",
+		"parent_publication_issue" : "3",
+		"parent_publication_publisher" : "PLoS ONE",
+		"parent_publication_doi" : "10.1371/journal.pone.0119638"
+	    }
+	]
+	,
+	"subject_topic" :
+	[
+	    {
+		"subject_topic_term" : 
+		{
+		    "uri" : "http://id.worldcat.org/fast/1737284",
+		    "value" : "Educational attainment",
+		    "type" : "external",
+		    "vocabulary_string_key" : "subject_topic",
+		    "internal_id" : 195775
+		}
+	    },
+	    {
+		"subject_topic_term" : 
+		{
+		    "uri" : "http://id.worldcat.org/fast/1053367",
+		    "value" : "Parental influences",
+		    "type" : "external",
+		    "vocabulary_string_key" : "subject_topic",
+		    "internal_id" : 195776
+		}
+	    }
+	    ,
+	    {
+		"subject_topic_term": 
+		{
+		    "uri" : "http://id.worldcat.org/fast/1026881",
+		    "value" : "Mother and child--Psychological aspects",
+		    "type" : "external",
+		    "vocabulary_string_key" : "subject_topic",
+		    "internal_id" : 195777
+		}
+	    }
+	]
     }
 }
