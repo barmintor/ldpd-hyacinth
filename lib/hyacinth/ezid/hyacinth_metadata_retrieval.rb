@@ -2,7 +2,7 @@
 # from the dynamic_field_data hash (which is an instance variable
 # of DigitalObject)
 module Hyacinth::Ezid
-  class MetadataRetrieval
+  class HyacinthMetadataRetrieval
     attr_reader :creators, :editors, :moderators, :contributors
     def initialize(dynamic_field_data_arg)
       # dfd is shorthand for dynamic_field_data
