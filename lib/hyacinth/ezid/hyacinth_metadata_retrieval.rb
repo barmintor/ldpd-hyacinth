@@ -11,6 +11,7 @@ module Hyacinth::Ezid
       @editors = []
       @moderators = []
       @contributors = []
+      process_names
     end
 
     # Following returns the title of an item. NOTE: if ever an item contains

@@ -97,13 +97,12 @@ describe Hyacinth::Ezid::HyacinthMetadataRetrieval do
 
   end
 
-  context "#process_names:" do
+  context "#process_names works:" do
     
     it "creators set" do
       dfd = sample_item_digital_object_data['dynamic_field_data']
       local_metadata_retrieval = Hyacinth::Ezid::HyacinthMetadataRetrieval.new dfd
       expected_creators = ['Salinger, J. D.','Lincoln, Abraham']
-      local_metadata_retrieval.process_names
       expect(local_metadata_retrieval.creators).to eq(expected_creators)
     end
 
@@ -111,7 +110,6 @@ describe Hyacinth::Ezid::HyacinthMetadataRetrieval do
       dfd = sample_item_digital_object_data['dynamic_field_data']
       local_metadata_retrieval = Hyacinth::Ezid::HyacinthMetadataRetrieval.new dfd
       expected_editors = ['Lincoln, Abraham']
-      local_metadata_retrieval.process_names
       expect(local_metadata_retrieval.editors).to eq(expected_editors)
     end
 
