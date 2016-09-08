@@ -32,11 +32,25 @@
             }
 	]
 	,
+	"doi_identifier" : 
+	[
+	    {
+		"doi_identifier_value" : "10.1371/journal.pone.0119638"
+	    }
+	]
+	,
 	"abstract" : 
 	[
             {
 		"abstract_value" : "This is an abstract; yes, a very nice abstract"
             }
+	]
+	,
+	"publisher" : 
+	[
+	    {
+		"publisher_value": "Academic Commons, Columbia University"
+	    }
 	]
 	,
 	"name" : 

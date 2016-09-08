@@ -85,6 +85,30 @@ describe Hyacinth::Ezid::HyacinthMetadataRetrieval do
 
   end
 
+  context "#doi_identifier" do
+    
+    it "doi_identifier" do
+      dfd = sample_item_digital_object_data['dynamic_field_data']
+      local_metadata_retrieval = Hyacinth::Ezid::HyacinthMetadataRetrieval.new dfd
+      expected_doi_identifier = '10.1371/journal.pone.0119638'
+      actual_doi_identifier = local_metadata_retrieval.doi_identifier
+      expect(actual_doi_identifier).to eq(expected_doi_identifier)
+    end
+
+  end
+
+  context "#publisher" do
+    
+    it "publisher" do
+      dfd = sample_item_digital_object_data['dynamic_field_data']
+      local_metadata_retrieval = Hyacinth::Ezid::HyacinthMetadataRetrieval.new dfd
+      expected_publisher = 'Academic Commons, Columbia University'
+      actual_publisher = local_metadata_retrieval.publisher
+      expect(actual_publisher).to eq(expected_publisher)
+    end
+
+  end
+
   context "#subject_topic:" do
     
     it "subject_topic" do
