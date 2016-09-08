@@ -3,7 +3,7 @@
 # of DigitalObject)
 module Hyacinth::Ezid
   class HyacinthMetadataRetrieval
-    attr_reader :creators, :editors, :moderators, :contributors
+    attr_reader :creators, :editors, :moderators, :contributors, :subjects_topic
     def initialize(dynamic_field_data_arg)
       # dfd is shorthand for dynamic_field_data
       @dfd = dynamic_field_data_arg
@@ -11,7 +11,9 @@ module Hyacinth::Ezid
       @editors = []
       @moderators = []
       @contributors = []
+      @subjects_topic = []
       process_names
+      process_subjects_topic
     end
 
     # Following returns the title of an item. NOTE: if ever an item contains
@@ -65,12 +67,10 @@ module Hyacinth::Ezid
       end
     end
 
-    def subjects_topic
-      subjects_topic = []
+    def process_subjects_topic
       @dfd['subject_topic'].each do |topic|
-        subjects_topic << topic['subject_topic_term']['value']
+        @subjects_topic << topic['subject_topic_term']['value']
       end
-      subjects_topic
     end
   end
 end

@@ -13,17 +13,13 @@ module Hyacinth::Ezid
                      'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
                      'xsi:schemaLocation' => 'http://datacite.org/schema/kernel-3 http://schema.datacite.org/meta/kernel-3/metadata.xsd') do
           xml.identifier('identifierType' => 'DOI') { xml.text @hyacinth_metadata.doi_identifier }
-          xml.creators do
-            @hyacinth_metadata.creators.each do |name|
-              xml.creator { xml.creatorName name }
-            end
-          end
 
           xml.titles { xml.title @hyacinth_metadata.title } if @hyacinth_metadata.title
           xml.publisher EZID[:ezid_publisher]
           xml.publicationYear @hyacinth_metadata.date_issued_start_year
-          add_subjects(xml)
-          # addContributers(xml)
+          add_creators xml
+          add_subjects xml
+          add_contributors xml
           # addDates(xml)
           # xml.resourceType('resourceTypeGeneral' => Ezid::Helper.mapToResourceType(@valuesMap[@@TYPE_OF_RESOURCE]))
           # addDescriptions(xml)
@@ -37,6 +33,28 @@ module Hyacinth::Ezid
       xml.subjects do
         @hyacinth_metadata.subjects_topic.each { |topic| xml.subject topic }
       end unless @hyacinth_metadata.subjects_topic.empty?
+    end
+
+    def add_creators(xml)
+      xml.creators do
+        @hyacinth_metadata.creators.each do |name|
+          xml.creator { xml.creatorName name }
+        end
+      end
+    end
+
+    def add_contributors(xml)
+      xml.contributors do
+        @hyacinth_metadata.editors.each do |name|
+          xml.contributor('contributorType' => 'Editor') { xml.contributorName name }
+        end
+        @hyacinth_metadata.moderators.each do |name|
+          xml.contributor('contributorType' => 'Other') { xml.contributorName name }
+        end
+        @hyacinth_metadata.contributors.each do |name|
+          xml.contributor('contributorType' => 'Other') { xml.contributorName name }
+        end
+      end
     end
   end
 end
