@@ -3,10 +3,10 @@ require 'equivalent-xml'
 
 describe Hyacinth::Ezid::DataciteMetadataBuilder do
 
-  let(:sample_item_digital_object_data) {
-    dod = JSON.parse( fixture('lib/hyacinth/ezid/ezid_item.json').read )
-    dod['identifiers'] = ['item.' + SecureRandom.uuid] # random identifer to avoid collisions
-    dod
+  let(:dod) {
+    data = JSON.parse( fixture('lib/hyacinth/ezid/ezid_item.json').read )
+    data['identifiers'] = ['item.' + SecureRandom.uuid] # random identifer to avoid collisions
+    data
   }
 
   before(:context) do
@@ -18,8 +18,7 @@ describe Hyacinth::Ezid::DataciteMetadataBuilder do
   context "#datacite_xml:" do
     
     it "datacite_xml" do
-      dfd = sample_item_digital_object_data['dynamic_field_data']
-      metadata_retrieval = Hyacinth::Ezid::HyacinthMetadataRetrieval.new dfd
+      metadata_retrieval = Hyacinth::Ezid::HyacinthMetadataRetrieval.new dod
       metadata_builder = Hyacinth::Ezid::DataciteMetadataBuilder.new metadata_retrieval
       actual_xml = metadata_builder.datacite_xml
       expect(EquivalentXml.equivalent?(@expected_xml, actual_xml)).to eq(true)

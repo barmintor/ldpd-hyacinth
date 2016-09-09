@@ -4,9 +4,11 @@
 module Hyacinth::Ezid
   class HyacinthMetadataRetrieval
     attr_reader :creators, :editors, :moderators, :contributors, :subjects_topic
-    def initialize(dynamic_field_data_arg)
+    def initialize(digital_object_data_arg)
+      # dod is shorthand for digital_object_data
+      @dod = digital_object_data_arg
       # dfd is shorthand for dynamic_field_data
-      @dfd = dynamic_field_data_arg
+      @dfd = @dod['dynamic_field_data']
       @creators = []
       @editors = []
       @moderators = []
@@ -31,10 +33,27 @@ module Hyacinth::Ezid
       @dfd['abstract'][0]['abstract_value'] if @dfd.key? 'abstract'
     end
 
+    # Following returns the type of resource for an item.
+    def type_of_resource
+      @dfd['type_of_resource'][0]['type_of_resource_value'] if @dfd.key? 'type_of_resource'
+    end
+
     # Following returns the starting year of the Date Issued field.
     # Date is encoded using w3cdtf, so year is always present at start of date
     def date_issued_start_year
       @dfd['date_issued'][0]['date_issued_start_value'][0..3] if @dfd.key? 'date_issued'
+    end
+
+    # Following returns the date of the created field. Timestamp is encoded using w3cdtf,
+    # so date in YYYY-MM-DD is always present at start of the timestamp string
+    def date_created
+      @dod['created'][0..9]
+    end
+
+    # Following returns the date of the modified field. Timestamp is encoded using w3cdtf,
+    # so date in YYYY-MM-DD is always present at start of the timestamp string
+    def date_modified
+      @dod['modified'][0..9]
     end
 
     def parent_publication_issn

@@ -6,6 +6,10 @@
 	"string_key" : "item"
     }
     ,
+    "created" : "2015-02-04T19:22:37.000Z"
+    ,
+    "modified" : "2016-03-31T20:52:23.000Z"
+    ,
     "project" : 
     {
 	"string_key" : "test"
@@ -36,6 +40,13 @@
 	[
 	    {
 		"doi_identifier_value" : "10.1371/journal.pone.0119638"
+	    }
+	]
+	,
+	"type_of_resource" : 
+	[
+	    {
+		"type_of_resource_value" : "still image"
 	    }
 	]
 	,
