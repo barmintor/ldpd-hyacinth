@@ -101,6 +101,17 @@ describe Hyacinth::Ezid::HyacinthMetadataRetrieval do
 
   end
 
+  context "#handle_net_identifier" do
+    
+    it "handle_net_identifier" do
+      local_metadata_retrieval = Hyacinth::Ezid::HyacinthMetadataRetrieval.new dod
+      expected_handle_net_identifier = 'http://hdl.handle.net/10022/AC:P:29183'
+      actual_handle_net_identifier = local_metadata_retrieval.handle_net_identifier
+      expect(actual_handle_net_identifier).to eq(expected_handle_net_identifier)
+    end
+
+  end
+
   context "#subject_topic:" do
     
     it "subject_topic" do

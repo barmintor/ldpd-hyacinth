@@ -43,6 +43,13 @@
 	    }
 	]
 	,
+	"cnri_handle_identifier" : 
+	[
+	    {
+		"cnri_handle_identifier_value" : "http://hdl.handle.net/10022/AC:P:29183"
+	    }
+	]
+	,
 	"type_of_resource" : 
 	[
 	    {

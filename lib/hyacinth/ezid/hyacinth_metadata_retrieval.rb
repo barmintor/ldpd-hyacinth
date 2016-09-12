@@ -72,6 +72,10 @@ module Hyacinth::Ezid
       @dfd['doi_identifier'][0]['doi_identifier_value'] if @dfd.key? 'doi_identifier'
     end
 
+    def handle_net_identifier
+      @dfd['cnri_handle_identifier'][0]['cnri_handle_identifier_value'] if @dfd.key? 'cnri_handle_identifier'
+    end
+
     def process_names
       @dfd['name'].each do |name|
         name['name_role'].each do |role|

@@ -22,10 +22,21 @@ module Hyacinth::Ezid
           add_contributors xml
           xml.resourceType('resourceTypeGeneral' => @hyacinth_metadata_retrieval.type_of_resource)
           xml.descriptions { xml.description('descriptionType' => 'Abstract') { xml.text @hyacinth_metadata_retrieval.abstract } }
-          # addRelatedIdentifiers(xml)
+          add_related_identifiers xml
         end
       end
       builder.to_xml
+    end
+
+    def add_related_identifiers(xml)
+      xml.relatedIdentifiers do
+        xml.relatedIdentifier('relatedIdentifierType' => 'ISSN',
+                              'relationType' => 'isPartOf') { xml.text @hyacinth_metadata_retrieval.parent_publication_issn }
+        xml.relatedIdentifier('relatedIdentifierType' => 'ISBN',
+                              'relationType' => 'isPartOf') { xml.text @hyacinth_metadata_retrieval.parent_publication_isbn }
+        xml.relatedIdentifier('relatedIdentifierType' => 'DOI',
+                              'relationType' => 'isVariantFormOf') { xml.text @hyacinth_metadata_retrieval.parent_publication_doi }
+      end
     end
 
     def add_subjects(xml)

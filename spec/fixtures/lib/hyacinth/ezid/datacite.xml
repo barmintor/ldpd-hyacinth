@@ -5,6 +5,11 @@
   <publicationYear>2015</publicationYear>
   <date dateType="Created">2015-02-04</date>
   <date dateType="Updated">2016-03-31</date>
+  <relatedIdentifiers>
+    <relatedIdentifier relatedIdentifierType="ISSN" relationType="isPartOf">1932-6203</relatedIdentifier>
+    <relatedIdentifier relatedIdentifierType="ISBN" relationType="isPartOf">0670734608</relatedIdentifier>
+    <relatedIdentifier relatedIdentifierType="DOI" relationType="isVariantFormOf">10.1371/journal.pone.0119638</relatedIdentifier>
+  </relatedIdentifiers>
   <creators>
     <creator>
       <creatorName>Salinger, J. D.</creatorName>
