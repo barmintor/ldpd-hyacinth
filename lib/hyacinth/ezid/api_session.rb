@@ -4,60 +4,77 @@
 # that were moved to a config file.
 
 require 'net/http'
-require 'ezid/record'
-require 'ezid/server_response'
+require 'hyacinth/ezid/server_response'
+require 'hyacinth/ezid/doi'
 
-module Ezid
+module Hyacinth::Ezid
   class ApiSession
     attr_accessor :naa, :username, :password
-    attr_reader :scheme
+    attr_reader :scheme, :last_response_from_server
 
     # fcd1, 08/31/16: Could not find any use of the following two constants in the
     # hypatia-new codebase.
     VERSION = '0.2.1'
     APIVERSION = 'EZID API, Version 2'
 
-    SECURESERVER = EZID[:url]
-    TESTUSERNAME = EZID[:test_user]
-    TESTPASSWORD = EZID[:test_password]
     SCHEMES = { ark: 'ark:/', doi: 'doi:' }
 
-    PRIVATE = 'reserved'
-    PUBLIC = 'public'
-    UNAVAIL = 'unavailable'
+    IDENTIFIER_STATUS = { public: 'public',
+                          reserved: 'reserved',
+                          unavailable: 'unavailable' }
 
-    TESTSHOULDER = { SCHEMES[:ark] => EZID[:shoulder][:ark],
-                     SCHEMES[:doi] => EZID[:shoulder][:doi] }
-    TESTMETADATA = { '_target' => 'http://example.org/opensociety',
-                     'erc.who' => 'Karl Popper',
-                     'erc.what' => 'The Open Society and Its Enemies',
-                     'erc.when' => '1945' }
-
-    def initialize(username = TESTUSERNAME, password = TESTPASSWORD, scheme = :ark, naa = '')
-      if username == TESTUSERNAME
-        password = TESTPASSWORD
-        @test = true
-      else
-        @test = false
-      end
-
-      @user = username
-      @pass = password
-      @scheme = SCHEMES[scheme]
-      @naa = naa
-
-      @naa = TESTSHOULDER[@scheme] if @test == true
-      self
+    def initialize(username = EZID[:test_user],
+                   password = EZID[:test_password])
+      @username = username
+      # @username = 'foo'
+      @password = password
+      # @password = 'bar'
+      @last_response_from_server = nil
     end
 
-    def mint(metadata = {})
-      shoulder = @scheme + @naa
-      metadata['_status'] = PRIVATE
-      request_uri = "/shoulder/#{shoulder}"
-      request = call_api(request_uri, :post, metadata)
-      return request if request.errored?
+    def get_identifier_metadata(identifier)
+      # identifier = identifier.to_str
+      # identifier = identifier.split(' | ')[0] if identifier.include?('| ark:/')
+      request_uri = '/id/' + identifier
+      response = call_api(request_uri, :get)
+      @last_response_from_server = Hyacinth::Ezid::ServerResponse.new response
+      # Ezid::Record.new(self, request.response['identifier'], request.response['metadata'], true)
+      # Maybe the way to go is to create a record, like the old code does
+      # response.body
+      # response
+      @last_response_from_server.parsed_body_hash
+    end
 
-      get(request)
+    def mint_identifier(identifier_type = :doi,
+                        identifier_status = Hyacinth::Ezid::Doi::IDENTIFIER_STATUS[:reserved],
+                        shoulder = EZID[:test_shoulder][:doi],
+                        metadata = {})
+      # we only handle doi identifiers.
+      return nil unless identifier_type == :doi
+      @identifier_type = identifier_type
+      @shoulder = shoulder
+      metadata['_status'] = identifier_status
+      request_uri = "/shoulder/#{@shoulder}"
+      response = call_api(request_uri, :post, metadata)
+      @last_response_from_server = Hyacinth::Ezid::ServerResponse.new response
+
+      # following code chunk assumes we asked to mint a DOI identifier. Code will need to be changed
+      # if ARK or URN identifiers support is added
+      # BEGIN_CHUNK
+      Hyacinth::Ezid::Doi.new(@last_response_from_server.doi,
+                              @last_response_from_server.ark,
+                              identifier_status) if @last_response_from_server.success?
+      # END_CHUNK
+    end
+
+    # metada_hash will contain the metadata, including the EZID internal metadata
+    # The datacite metadata (in XML format) will stored as value under the key 'datacite'
+    # For the EZID internal data, the key is the name of the element as given in the EZID API.
+    # For example, the key used for the identifier status is the element name '_status'
+    def modify_identifier(identifier, metadata_hash)
+      request_uri = '/id/' + identifier
+      response = call_api(request_uri, :post, metadata_hash)
+      response
     end
 
     def create(identifier, metadata = {})
@@ -78,7 +95,7 @@ module Ezid
     def build_identifier(identifier)
       unless identifier.start_with?(ApiSession::SCHEMES[:ark]) ||
              identifier.start_with?(ApiSession::SCHEMES[:doi])
-        identifier = @scheme + @naa + identifier
+        identifier = @shoulder + identifier
       end
       identifier
     end
@@ -109,16 +126,10 @@ module Ezid
     #   get(identifier)
     # end
 
-    def scheme=(scheme)
-      @scheme = SCHEMES[scheme]
-      @naa = TESTSHOULDER[@scheme] if @test == true
-      @scheme
-    end
-
     private
 
       def call_api(request_uri, request_method, request_data = nil)
-        uri = URI(SECURESERVER + request_uri)
+        uri = URI(EZID[:url] + request_uri)
 
         # which HTTP method to use?
         if request_method == :get
@@ -134,24 +145,16 @@ module Ezid
           request = Net::HTTP::Delete.new uri.request_uri
         end
 
-        request.basic_auth @user, @pass
+        request.basic_auth @username, @password
         request.add_field('Content-Type', 'text/plain; charset=UTF-8')
 
-        # Make the call
-
-        # this is commented implementation for ruby 1.9.*
-        # result = Net::HTTP.start(uri.host, uri.port, :use_ssl => true) do |http|
-        #   parse_record http.request(request).body
-        # end
-
-        # this is implementation for ruby 1.8.7
-        https = Net::HTTP.new(uri.host, uri.port)
-        https.use_ssl = true
-        result = https.start do |http|
-          Rails.logger.info "=== EZID request result: " + http.request(request).body
-          parse_record http.request(request).body
+        result = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+          response = http.request(request)
+          Rails.logger.info "=== EZID request result: " + response.body
+          # parse_record http.request(request).body
+          response
         end
-        Ezid::ServerResponse.new(result)
+        result
       end
 
       def parse_record(ezid_response)
